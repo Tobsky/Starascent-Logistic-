@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StaffListController;
 use App\Http\Controllers\ParcelListController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +57,7 @@ Route::get('parcel_list', function () {
 });
 Route::get('parcel_list', [ParcelListController::class,'show']);
 
-Route::get('parcel_list/{stats}', [ParcelListController::class,'parcelStatus']);
+Route::get('parcel_list/{stats}', [ParcelListController::class,'parcelStatus'])->where('stats', '[0-9]+');
 
 //******** Update Parcel Status
 Route::post('parcel_list', [ParcelListController::class,'updateStatus']);
@@ -67,10 +68,10 @@ Route::get('/new_parcel', function () {
 Route::post('new_parcel', [ParcelListController::class,'addParcel']);
 
 //************  Delete Parcel 
-Route::get('delete_parcel/{id}', [ParcelListController::class,'deleteParcel']);
+Route::get('delete_parcel/{id}', [ParcelListController::class,'deleteParcel'])->where('id', '[0-9]+');
 
 //************  Edit Parcel 
-Route::get('edit_parcel/{id}', [ParcelListController::class,'editParcel']);
+Route::get('edit_parcel/{id}', [ParcelListController::class,'editParcel'])->where('id', '[0-9]+');
 
 Route::post('edit_parcel', [ParcelListController::class,'updateParcel']);
 
@@ -110,3 +111,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+/* Route::prefix('user')->name('user.')->group(function(){
+
+    Route::middleware(['guest'])->group(function(){
+        Route::view('/login','login')->name('login');
+        Route::view('/register','register')->name('register');
+        Route::post('/registerUser', [UserController::class,'registerUser'])->name('registerUser');
+    });
+
+    Route::middleware(['auth'])->group(function(){
+        Route::view('/home','home')->name('home');
+    });
+}); */
